@@ -1,0 +1,11 @@
+{
+  "name": "tasks",
+  "version": "1.0.0",
+  "description": "simple task manager fullstack project using js in front and node at back",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Paritosh Singh",
+  "license": "ISC"
+}

@@ -1,0 +1,93 @@
+body {
+    background-color: #240A34;
+    color: white;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 10%;
+}
+h1{
+    text-decoration: underline;
+    font-size: 50px;
+}
+
+.tm {
+    width: 27vw;
+    padding: 2em 8em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #891652;
+    text-align: center;
+}
+form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+input{
+    width: 20vw;
+    height: 2.8vh;
+    font-size: large;
+    vertical-align: middle;
+}
+
+input:focus {
+    outline: none;
+}
+
+#add{
+    height: 3.5vh;
+    width: 4vw;
+    vertical-align: middle;
+    font-size: 30px;
+    background-color: #fd7e14;
+    color: #ccc;
+    cursor: pointer;
+}
+.tasks{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 3%;
+    width: 23.5vw;
+    height: 2vh;
+    background-color: white;
+    color: black;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: x-large;
+}
+
+#check{
+    width:2vw;
+    margin-left: -2px;
+}
+
+#task{
+    border: none;
+}
+
+.tasks button.edit{
+    margin-left: auto;
+    cursor: pointer;
+    border: solid 1px #101010;
+    border-radius: 5px;
+    background-color: #1565c0;
+    color: white;
+}
+.tasks button.delete{
+    cursor: pointer;
+    margin-left: 1em;
+    border: solid 1px #101010;
+    border-radius: 5px;
+    background-color: rgb(179, 29, 29);
+    color: white;
+}
+
