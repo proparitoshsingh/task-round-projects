@@ -18,6 +18,13 @@ addbtn.addEventListener('click', (e) => {
     const compcont=document.createElement('div');
     const taskcont=document.getElementById('taskCont');
     
+    try{
+        const body={}
+    }catch(err){
+        console.log(err);
+    }
+
+
     compcont.innerHTML=dytask;
     compcont.classList.add('tasks');
     const inpele=compcont.querySelector('#task');
