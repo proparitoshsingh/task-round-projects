@@ -11,11 +11,12 @@ app.post("/api/v1/add",async(req,res)=>{
     try{
         const {email,description,start_date,end_date}=req.body;
         const newTask=await pool.query(
-            "INSERT INTO tasks (email,description,start_date,end_date) VALUES($1,$2,$3,$4);",
+            "INSERT INTO tasks (email,description,start_date,end_date) VALUES($1,$2,$3,$4) RETURNING task_id;;",
             [email,description,start_date,end_date]
         );
+        const task_id=newTask.rows[0].task_id;
         console.log(newTask);
-        res.send("<h1>Succesfully added</h1>");
+        res.send({task_id});
     }catch(err){
         console.log(err.message);
     }
@@ -29,7 +30,7 @@ app.post("/api/v1/delete",async(req,res)=>{
             [id]
         );
         console.log(newTask);
-        res.send("deleted the task");
+        res.send(newTask);
     }catch(err){
         console.log(err.message);
     }
@@ -43,7 +44,7 @@ app.post("/api/v1/edit",async(req,res)=>{
             [id,description]
         );
         console.log(newTask);
-        res.send("<h1>edited succesfully</h1>");
+        res.send(newTask);
     }catch(err){
         console.log(err.message);
     }
@@ -51,10 +52,8 @@ app.post("/api/v1/edit",async(req,res)=>{
 
 app.get("/api/v1/tasks",async(req,res)=>{
     try{
-        const {email}=req.body;
         const tasks=await pool.query(
-            "SELECT * FROM tasks WHERE email = $1",
-            [email]
+            "SELECT * FROM tasks;"
         );
         res.send(tasks.rows);
     }catch(err){

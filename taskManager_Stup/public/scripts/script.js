@@ -1,5 +1,5 @@
 const addbtn = document.getElementById('add');
-const taskcontdiv=document.getElementById('taskCont');
+const taskcont = document.getElementById('taskCont');
 
 const dytask = `
         <input type="checkbox" id="check">
@@ -12,41 +12,57 @@ const dytask = `
         </button>
 `;
 
-addbtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const taskdata = document.getElementById('taskinp').value;
-    const compcont=document.createElement('div');
-    const taskcont=document.getElementById('taskCont');
-    
-    try{
-        const body={}
-    }catch(err){
-        console.log(err);
-    }
-
-
-    compcont.innerHTML=dytask;
-    compcont.classList.add('tasks');
-    const inpele=compcont.querySelector('#task');
-    inpele.value=taskdata;
-    taskcont.appendChild(compcont);
-
-    //adding delete button onclick function dynamically to newly created tasks coz foreach wont work here
+function addEventListenersOnTask(compcont, task_id) {
+    //delte event listner
     const delbtn = compcont.querySelector('.delete');
     delbtn.addEventListener('click', () => {
-        compcont.remove();
+        fetch('http://localhost:3000/api/v1/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'id': task_id }),
+        }).then(res => {
+            if (res.ok) {
+                console.log("Task deleted successfully");
+                compcont.remove();
+            } else {
+                throw new Error('Failed to delete task');
+            }
+        }).catch(err => {
+            console.log("Error during post req - ", err);
+        });
     });
 
-    //adding editing button onclick function dynamically too for same reasons
+    //edit event listner
     const editbtn = compcont.querySelector('.edit');
+    const inpele = compcont.querySelector('#task');
     editbtn.addEventListener('click', () => {
-        console.log('Task edited');
         if (inpele.readOnly) {
             inpele.readOnly = false;
             inpele.focus();
             editbtn.innerHTML = '<span class="material-symbols-outlined">done</span>';
         } else {
             inpele.readOnly = true;
+            const newdesc = inpele.value;
+            fetch('http://localhost:3000/api/v1/edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    'id': task_id,
+                    'description': newdesc,
+                }),
+            }).then(res => {
+                if (res.ok) {
+                    console.log("Task edited successfully");
+                } else {
+                    throw new Error('Failed to edit task');
+                }
+            }).catch(err => {
+                console.log("Error during post req - ", err);
+            });
             editbtn.innerHTML = '<span class="material-symbols-outlined">edit_square</span>';
         }
     });
@@ -56,17 +72,78 @@ addbtn.addEventListener('click', (e) => {
     checkbox.addEventListener('change', () => {
         if (checkbox.checked) {
             inpele.style.textDecoration = 'line-through';
-            compcont.style.backgroundColor="green";
-            inpele.style.backgroundColor="green";
+            compcont.style.backgroundColor = "green";
+            inpele.style.backgroundColor = "green";
         } else {
             inpele.style.textDecoration = 'none';
-            compcont.style.backgroundColor="white";
-            inpele.style.backgroundColor="white";
+            compcont.style.backgroundColor = "white";
+            inpele.style.backgroundColor = "white";
         }
     });
+};
 
-    console.log(`Task called - "${taskdata}" added succesfully!`);
-    document.getElementById('taskinp').value="";
+fetch('http://localhost:3000/api/v1/tasks', {
+    method: 'GET',
+}).then(res => {
+    if (!res.ok) {
+        throw new Error("error while fetching- ")
+    } else {
+        return res.json();
+    }
+}).then(data => {
+    console.log('Tasks:', data);
+    data.forEach(task => {
+        const compcont = document.createElement('div');
+        let task_id;
+        compcont.innerHTML = dytask;
+        compcont.classList.add('tasks');
+        const inpele = compcont.querySelector('#task');
+        inpele.value = task.description;
+        task_id = task.task_id;
+        taskcont.appendChild(compcont);
+        addEventListenersOnTask(compcont,task_id);
+    });
+})
+
+
+addbtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const taskdata = document.getElementById('taskinp').value;
+    const compcont = document.createElement('div');
+    let task_id;
+    try {
+        const currentDate = new Date();
+        const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+        const currdata = {
+            "email": "paritoshsingh@gmail.com",
+            "start_date": formattedDate,
+            "end_date": null,
+            "description": taskdata
+        };
+        fetch("http://localhost:3000/api/v1/add", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(currdata),
+        }).then(data => {
+            return data.json();
+        }).then(res => {
+            task_id = res.task_id;
+            console.log(`Task called - "${taskdata}" added succesfully!`);
+            compcont.innerHTML = dytask;
+            compcont.classList.add('tasks');
+            const inpele = compcont.querySelector('#task');
+            inpele.value = taskdata;
+            taskcont.appendChild(compcont);
+            addEventListenersOnTask(compcont,task_id);
+        }).catch(err => {
+            console.error('Fetch Error:', err);
+        });
+    } catch (err) {
+        console.log('Try-Catch Error:', err);
+    }
+    document.getElementById('taskinp').value = "";
 });
 
 
