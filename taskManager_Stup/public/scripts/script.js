@@ -1,3 +1,13 @@
+const storedToken = sessionStorage.getItem('jwtToken');
+const email=localStorage.getItem('email');
+
+if (storedToken) {
+    console.log("Welcome!!!");
+} else {
+    window.location.href = "login.html";
+}
+
+
 const addbtn = document.getElementById('add');
 const taskcont = document.getElementById('taskCont');
 
@@ -16,7 +26,7 @@ function addEventListenersOnTask(compcont, task_id) {
     //delte event listner
     const delbtn = compcont.querySelector('.delete');
     delbtn.addEventListener('click', () => {
-        fetch('http://localhost:3000/api/v1/delete', {
+        fetch('http://localhost:3000/api/v1/delete?', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -82,28 +92,33 @@ function addEventListenersOnTask(compcont, task_id) {
     });
 };
 
-fetch('http://localhost:3000/api/v1/tasks', {
-    method: 'GET',
-}).then(res => {
-    if (!res.ok) {
-        throw new Error("error while fetching- ")
-    } else {
-        return res.json();
-    }
-}).then(data => {
-    console.log('Tasks:', data);
-    data.forEach(task => {
-        const compcont = document.createElement('div');
-        let task_id;
-        compcont.innerHTML = dytask;
-        compcont.classList.add('tasks');
-        const inpele = compcont.querySelector('#task');
-        inpele.value = task.description;
-        task_id = task.task_id;
-        taskcont.appendChild(compcont);
-        addEventListenersOnTask(compcont,task_id);
+try {
+    fetch(`http://localhost:3000/api/v1/tasks?email=${encodeURIComponent(email)}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': storedToken,
+        }
+    }).then(async (res) => {
+        const data=await res.json();
+        if (!res.ok) { 
+            throw new Error(data.message)
+        }
+        console.log('Tasks retrived from the database succesfully!');
+        data.forEach(task => {
+            const compcont = document.createElement('div');
+            let task_id;
+            compcont.innerHTML = dytask;
+            compcont.classList.add('tasks');
+            const inpele = compcont.querySelector('#task');
+            inpele.value = task.description;
+            task_id = task.task_id;
+            taskcont.appendChild(compcont);
+            addEventListenersOnTask(compcont, task_id);
+        });
     });
-})
+} catch (err) {
+    document.getElementById('errorMsg').textContent=err.message;
+}
 
 
 addbtn.addEventListener('click', (e) => {
@@ -115,12 +130,12 @@ addbtn.addEventListener('click', (e) => {
         const currentDate = new Date();
         const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
         const currdata = {
-            "email": "paritoshsingh@gmail.com",
+            "email": email,
             "start_date": formattedDate,
             "end_date": null,
             "description": taskdata
         };
-        fetch("http://localhost:3000/api/v1/add", {
+        fetch('http://localhost:3000/api/v1/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -136,7 +151,7 @@ addbtn.addEventListener('click', (e) => {
             const inpele = compcont.querySelector('#task');
             inpele.value = taskdata;
             taskcont.appendChild(compcont);
-            addEventListenersOnTask(compcont,task_id);
+            addEventListenersOnTask(compcont, task_id);
         }).catch(err => {
             console.error('Fetch Error:', err);
         });
@@ -146,4 +161,9 @@ addbtn.addEventListener('click', (e) => {
     document.getElementById('taskinp').value = "";
 });
 
-
+const logoutbtn=document.getElementById('logoutButton');
+logoutbtn.onclick=()=>{
+    sessionStorage.removeItem('jwtToken');
+    localStorage.removeItem('email');
+    window.location.href="login.html";
+}

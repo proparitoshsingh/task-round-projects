@@ -7,3 +7,10 @@ CREATE TABLE tasks(
     start_date TIMESTAMP NOT NULL,
     end_date TIMESTAMP 
 );
+
+CREATE TABLE creds(
+    user_id SERIAL PRIMARY KEY,
+    email VARCHAR(50) UNIQUE NOT NULL,
+    username VARCHAR(30) UNIQUE NOT NULL,
+    password VARCHAR(200) NOT NULL
+);

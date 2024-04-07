@@ -9,17 +9,24 @@
 </head>
 
 <body>
+    <div class="header">
+        <h1>Task Manager</h1>
+        <p class="signature">- By Paritosh Singh</p>
+    </div>
     <div class="container">
         <div class="card">
+            <h3 id="loginWarning" class="warning"></h3>
+            <h3 id="errorMessage" style="color: red;"></h3>
             <h1>Login</h1>
-            <form action="#">
-                <input type="text" placeholder="Username">
-                <input type="password" placeholder="Password">
-                <button type="submit">Login</button>
+            <form onsubmit="handleSubmit(event)">
+                <input type="text" id="username" placeholder="Username" value="">
+                <input type="password" id="password" placeholder="Password" value="">
+                <button type="submit" id="logbtn">Login</button>
             </form>
             <button id="createAccountBtn">Create New Account</button>
         </div>
     </div>
+    <script src="./scripts/login.js"></script>
 </body>
 
 </html>

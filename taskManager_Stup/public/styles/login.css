@@ -4,17 +4,35 @@ body {
     margin: 0;
 }
 
+.header {
+    text-align: center;
+    margin-top: 10vh;
+}
+
+.header h1 {
+    font-size: 3rem;
+    margin-bottom: 0;
+}
+
+.signature {
+    font-size: 0.8rem;
+    margin-top: 0;
+    opacity: 0.7; 
+}
+
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 80vh;
+    flex-direction: column; /* Added */
+    position: relative;
 }
 
 .card {
     margin-bottom: 10%;
     width: 25vw;
-    height: 33vh;
+    height: 35vh;
     padding: 20px;
     border-radius: 10px;
     background-color: #891652;
@@ -75,4 +93,16 @@ button:hover {
 
 #createAccountBtn:hover {
     background-color: #0a58ca;
+}
+
+.warning {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    text-align: center;
+    color: #ff0000; 
+    font-weight: 500;
+    margin-top: 7%;
 }

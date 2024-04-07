@@ -13,9 +13,15 @@
 
 <body>
     <div class="container">
-
+        <div class="top-right">
+            <button id="logoutButton">Logout</button>
+        </div>
         <div class="tm">
-            <h1>Task Manager</h1>
+            <h3 id="errorMsg" style="color: red;"></h3>
+            <div class="header">
+                <h1>Task Manager</h1>
+                <p class="signature">- By Paritosh Singh</p>
+            </div>
             <form action="">
                 <input type="text" id="taskinp" value="">
                 <button id="add">+</button>
