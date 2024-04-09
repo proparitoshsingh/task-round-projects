@@ -1,0 +1,22 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    align-items: flex-start;
+}
+
+.card{
+    padding: 2%;
+    opacity: 0;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    transform: translateX(200px);
+    transition: 200ms;
+}
+
+.card.show{
+    transform: translateX(0);
+    opacity: 1;
+}
+
