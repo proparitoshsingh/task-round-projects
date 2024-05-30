@@ -1,0 +1,50 @@
+body{
+   background-color: beige;
+}
+
+p{
+   text-align: center;
+   text-decoration: overline;
+}
+
+h1{
+   text-align: center;
+   color: grey;
+   text-decoration: underline;
+}
+
+.products{
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   margin-top: 2%;
+}
+
+.product{
+   background-color: bisque;
+   margin: 4%;
+   border-radius: 5px;
+   transition: 0.3s ease-in-out;
+}
+
+.product:hover{
+   box-shadow: 2px 2px 15px rgb(152, 153, 92);
+}
+
+.pagination{
+   padding: 10px;
+   margin: 15px 0;
+   display: flex;
+   justify-content: center;
+}
+
+.pagination span{
+   padding: 15px 20px;
+   border: 2px solid grey;
+   cursor: pointer;
+   
+}
+
+.active{
+   background-color: lightblue;
+}
